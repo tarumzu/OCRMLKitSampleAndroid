@@ -1,18 +1,21 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
     compileSdkVersion(28)
-    defaultConfig{
+    defaultConfig {
         applicationId = "jp.sample.ocrmlkitsampleandroid"
         minSdkVersion(21)
         targetSdkVersion(28)
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner="android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         getByName("debug") {
@@ -26,8 +29,25 @@ android {
     }
 }
 
+ktlint {
+    version.set("0.31.0")
+    debug.set(true)
+    verbose.set(true)
+    android.set(true)
+    outputToConsole.set(true)
+    reporters.set(setOf(ReporterType.PLAIN, ReporterType.CHECKSTYLE))
+    ignoreFailures.set(true)
+    enableExperimentalRules.set(true)
+    // kotlinScriptAdditionalPaths {
+    //    include(fileTree("scripts/"))
+    // }
+    // filter {
+    //    exclude("**/generated/**")
+    //    include("src/**/*.kt")
+    // }
+}
 
-val kotlinVersion:String by project
+val kotlinVersion: String by project
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to arrayOf("*.jar"))))
