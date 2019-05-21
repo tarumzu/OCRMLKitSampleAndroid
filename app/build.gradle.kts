@@ -24,27 +24,21 @@ android {
         }
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), file("proguard-rules.pro"))
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                file("proguard-rules.pro")
+            )
         }
     }
 }
 
 ktlint {
     version.set("0.31.0")
-    debug.set(true)
-    verbose.set(true)
     android.set(true)
     outputToConsole.set(true)
     reporters.set(setOf(ReporterType.PLAIN, ReporterType.CHECKSTYLE))
     ignoreFailures.set(true)
     enableExperimentalRules.set(true)
-    // kotlinScriptAdditionalPaths {
-    //    include(fileTree("scripts/"))
-    // }
-    // filter {
-    //    exclude("**/generated/**")
-    //    include("src/**/*.kt")
-    // }
 }
 
 val kotlinVersion: String by project
