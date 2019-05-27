@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-android-extensions")
     id("org.jlleitschuh.gradle.ktlint")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -58,5 +59,7 @@ dependencies {
     androidTestImplementation("com.android.support.test:runner:1.0.2")
     androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.2")
 
+    implementation("com.google.firebase:firebase-core:16.0.9")
     implementation("com.google.firebase:firebase-ml-vision:20.0.0")
 }
+

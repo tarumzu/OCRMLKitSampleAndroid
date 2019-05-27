@@ -6,25 +6,24 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.RadioButton
 import androidx.exifinterface.media.ExifInterface
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.text.FirebaseVisionCloudTextRecognizerOptions
 
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST = 0
-    //lateinit var ocrUtil: OCRUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //ocrUtil = OCRUtil(applicationContext)
+
         button.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -76,9 +75,18 @@ class MainActivity : AppCompatActivity() {
 
                     bitmap?.let {
                         image.setImageBitmap(it)
-                        val langId = radio_group.getCheckedRadioButtonId()
-                        val langText = findViewById<RadioButton>(langId).text.toString()
-                        //ocr.text = ocrUtil.getString(applicationContext, it, OCRUtil.Companion.LangType.getLangType(langText).str)
+                        val image = FirebaseVisionImage.fromBitmap(it)
+
+                        val detector = FirebaseVision.getInstance().onDeviceTextRecognizer
+
+                        detector.processImage(image)
+                            .addOnSuccessListener { firebaseVisionText ->
+                                // Task completed successfully
+                                ocr.text = firebaseVisionText.text
+                            }
+                            .addOnFailureListener {
+                                // Task failed with an exception
+                            }
                     } ?: run {
                         ocr.text = "bitmap is null"
                     }
